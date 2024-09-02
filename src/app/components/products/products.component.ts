@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Product } from '../../models/product.model';
+import { CreateProductDTO, Product } from '../../models/product.model';
 
 import { StoreService } from '../../services/store.service';
 import { ProductsService } from '../../services/products.service';
@@ -44,6 +44,25 @@ export class ProductsComponent implements OnInit {
     this.productsService.getProduct(id).subscribe((data) => {
       this.toggleProductDetail();
       this.productChosen = data;
+    });
+  }
+
+  createNewProduct() {
+    const product: CreateProductDTO = {
+      title: 'Zapatillas Guernica classic oldskool',
+      price: 69,
+      description: `Las Old Skool GUERNICA, ante, lona y caucho de calidad máxima.
+        Incluyen puntera reforzada, cuello acolchado para mayor sujeción y
+        la distintiva suela waffle de caucho.
+        Rinden homenaje a nuestra memoria y el legado de paz que deseamos.
+        Porque "El arte es una mentira que nos acerca a la verdad" Pablo Picasso.`,
+      images: [
+        'https://unonueveocho.es/3743-thickbox_default/zapatillas-guernica-classic-old-skool.jpg',
+      ],
+      categoryId: 1,
+    };
+    this.productsService.create(product).subscribe((data) => {
+      this.products.unshift(data);
     });
   }
 }
