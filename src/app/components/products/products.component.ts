@@ -21,6 +21,9 @@ export class ProductsComponent implements OnInit {
   showProductDetail = false;
   productChosen!: Product;
 
+  limit = 10;
+  offset = 0;
+
   constructor(
     private storeService: StoreService,
     private productsService: ProductsService
@@ -29,10 +32,14 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productsService.getAllProducts().subscribe((data) => {
-      this.products = data;
+    this.loadPage();
+  }
+
+  loadPage() {
+    this.productsService.getProducts(10, 0).subscribe((data) => {
+      this.products = this.products.concat(data);
+      this.offset += this.limit;
     });
-    console.log('products: ', this.products);
   }
 
   onAddToShoppingCart(product: Product) {
