@@ -6,7 +6,7 @@ import {
   HttpStatusCode,
 } from '@angular/common/http';
 import { catchError, map, retry } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, zip } from 'rxjs';
 import {
   CreateProductDTO,
   Product,
@@ -46,6 +46,10 @@ export class ProductsService {
       );
   }
 
+  fetchReadAndUpdate(id: string, dto: UpdateProductDTO) {
+    return zip(this.getProduct(id), this.update(id, dto));
+  }
+
   getProduct(id: string) {
     return this.http.get<Product>(`${this.apiUrl}/${id}`).pipe(
       catchError((error: HttpErrorResponse) => {
@@ -67,7 +71,7 @@ export class ProductsService {
     return this.http.post<Product>(this.apiUrl, dto);
   }
 
-  update(dto: UpdateProductDTO, id: string) {
+  update(id: string, dto: UpdateProductDTO) {
     return this.http.put<Product>(`${this.apiUrl}/${id}`, dto);
   }
 

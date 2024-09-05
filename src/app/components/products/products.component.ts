@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { switchMap } from 'rxjs/operators';
+import { zip } from 'rxjs';
 
 import {
   CreateProductDTO,
@@ -68,6 +70,25 @@ export class ProductsComponent implements OnInit {
     );
   }
 
+  readAndUpdate(id: string) {
+    this.productsService
+      .getProduct(id)
+      .pipe(
+        switchMap((product) =>
+          this.productsService.update(product.id, { title: 'change' })
+        )
+      )
+      .subscribe((data) => {
+        console.log(data);
+      });
+    this.productsService
+      .fetchReadAndUpdate(id, { title: 'change' })
+      .subscribe((rta) => {
+        const read = rta[0];
+        const uodate = rta[1];
+      });
+  }
+
   createNewProduct() {
     const product: CreateProductDTO = {
       title: 'Zapatillas Guernica classic oldskool',
@@ -93,7 +114,7 @@ export class ProductsComponent implements OnInit {
       description: 'Hemos cambiado este producto',
     };
     const id = this.productChosen.id;
-    this.productsService.update(changes, id).subscribe((data) => {
+    this.productsService.update(id, changes).subscribe((data) => {
       const productIndex = this.products.findIndex(
         (item) => item.id === this.productChosen.id
       );
