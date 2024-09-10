@@ -11,7 +11,7 @@ import { UsersService } from './services/users.service';
 export class AppComponent {
   imgParent = '';
   showImg = true;
-
+  token = '';
   constructor(
     private authService: AuthService,
     private usersService: UsersService
@@ -35,11 +35,5 @@ export class AppComponent {
       .subscribe((rta) => {
         console.log(rta);
       });
-  }
-
-  login() {
-    this.authService.login('juan@email.com', '666').subscribe((rta) => {
-      console.log(rta.access_token);
-    });
   }
 }
