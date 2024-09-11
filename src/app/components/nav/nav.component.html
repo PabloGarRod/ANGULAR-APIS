@@ -35,7 +35,7 @@
       </ul>
     </nav>
     <div class="info">
-      <button *ngIf="!token; else elseBlock" (click)="login()">Login</button>
+      <button *ngIf="!user; else elseBlock" (click)="login()">Login</button>
       <ng-template #elseBlock>
         <div class="account">{{ user?.email }}</div>
       </ng-template>
