@@ -12,7 +12,7 @@ import {
   Product,
   UpdateProductDTO,
 } from './../models/product.model';
-
+import { checkTime } from '../interceptors/time.interceptor';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -32,6 +32,7 @@ export class ProductsService {
     return this.http
       .get<Product[]>(this.apiUrl, {
         params,
+        context: checkTime(),
       })
       .pipe(
         retry(3),
